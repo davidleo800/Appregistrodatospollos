@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">App registro datos pollos</string>
+
+    <string name="URL_OBTENER_tb_detalles">https://weakened-bet.000webhostapp.com/webservice_app/Obtenertb_detalles.php</string>
+    <string name="URL_REGISTRAR_tb_detalles">https://weakened-bet.000webhostapp.com/webservice_app/Registrartb_detalles.php</string>
+    <string-array name="array_granja">
+        <item>Granja 1</item>
+        <item>Granja 2</item>
+    </string-array>
+    <string-array name="array_galpon">
+        <item>Galpon 1</item>
+        <item>Galpon 2</item>
+    </string-array>
+
+</resources>
