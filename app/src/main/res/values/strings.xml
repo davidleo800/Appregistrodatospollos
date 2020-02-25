@@ -3,6 +3,7 @@
 
     <string name="URL_OBTENER_tb_detalles">https://weakened-bet.000webhostapp.com/webservice_app/Obtenertb_detalles.php</string>
     <string name="URL_REGISTRAR_tb_detalles">https://weakened-bet.000webhostapp.com/webservice_app/Registrartb_detalles.php</string>
+    <string name="URL_LOGIN">https://weakened-bet.000webhostapp.com/webservice_app/ws_login.php</string>
     <string-array name="array_granja">
         <item>Granja 1</item>
         <item>Granja 2</item>
