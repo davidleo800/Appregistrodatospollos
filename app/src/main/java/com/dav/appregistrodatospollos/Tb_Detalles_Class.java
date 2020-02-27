@@ -9,10 +9,9 @@ public class Tb_Detalles_Class {
     String mortalidad;
     String alimento;
     String peso;
-    String veterinario;
 
     public Tb_Detalles_Class(String id_detalle, String fecha, String granja,
-                 String galpon, String galponero, String mortalidad, String alimento, String peso, String veterinario) {
+                 String galpon, String galponero, String mortalidad, String alimento, String peso) {
         Id_detalle = id_detalle;
         this.fecha = fecha;
         this.granja = granja;
@@ -21,7 +20,6 @@ public class Tb_Detalles_Class {
         this.mortalidad = mortalidad;
         this.alimento = alimento;
         this.peso = peso;
-        this.veterinario = veterinario;
     }
 
     public String getMortalidad() {
@@ -46,14 +44,6 @@ public class Tb_Detalles_Class {
 
     public void setPeso(String peso) {
         this.peso = peso;
-    }
-
-    public String getVeterinario() {
-        return veterinario;
-    }
-
-    public void setVeterinario(String veterinario) {
-        this.veterinario = veterinario;
     }
 
     public String getId_detalle() {
