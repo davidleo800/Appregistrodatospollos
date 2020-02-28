@@ -87,11 +87,12 @@ public class MainGalponero extends AppCompatActivity {
         SharedPreferences preferences1 = getSharedPreferences("preferencesLogin1", Context.MODE_PRIVATE);
         granja = preferences1.getString("Granja","");
         nombre = preferences1.getString("Nombre","");
-        if (granja == "" || nombre == ""){
+        documentoGalponero = preferences1.getInt("Doc",0);
+        if (granja == "" || nombre == "" || documentoGalponero == 0 ){
             nombre = extras.getString("Nombre");
             granja = extras.getString("Granja");
             documentoGalponero = extras.getInt("Doc");
-            tvNombre.setText(nombre+documentoGalponero);
+            tvNombre.setText(nombre);
             tvGranja.setText(granja);
             SharedPreferences preferences = getSharedPreferences("preferencesLogin1", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -100,7 +101,7 @@ public class MainGalponero extends AppCompatActivity {
             editor.putInt("Doc", documentoGalponero);
             editor.commit();
         }else{
-            tvNombre.setText(nombre+documentoGalponero);
+            tvNombre.setText(nombre);
             tvGranja.setText(granja);
         }
 

@@ -29,9 +29,13 @@ public class AdapterServer extends RecyclerView.Adapter<AdapterServer.serverView
 
     @Override
     public void onBindViewHolder(@NonNull serverViewHolder holder, int position) {
+        holder.tvFecha.setText(listaServer.get(position).getFecha());
         holder.tvGranja.setText(listaServer.get(position).getGranja());
         holder.tvGalpon.setText(listaServer.get(position).getGalpon());
+        holder.tvGalponero.setText(listaServer.get(position).getGalponero());
         holder.tvMort.setText(listaServer.get(position).getMortalidad());
+        holder.tvAlimento.setText(listaServer.get(position).getAlimento());
+        holder.tvPeso.setText(listaServer.get(position).getPeso());
     }
 
     @Override
@@ -41,14 +45,18 @@ public class AdapterServer extends RecyclerView.Adapter<AdapterServer.serverView
 
     public class serverViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvGranja, tvGalpon, tvMort;
+        TextView tvFecha, tvGranja, tvGalpon, tvGalponero, tvMort, tvAlimento, tvPeso;
 
         public serverViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            tvFecha = itemView.findViewById(R.id.tvFecha);
             tvGranja = itemView.findViewById(R.id.tvGranja);
             tvGalpon = itemView.findViewById(R.id.tvGalpon);
+            tvGalponero = itemView.findViewById(R.id.tvGalponero);
             tvMort = itemView.findViewById(R.id.tvMort);
+            tvAlimento = itemView.findViewById(R.id.tvAlimento);
+            tvPeso = itemView.findViewById(R.id.tvPeso);
         }
     }
 }
