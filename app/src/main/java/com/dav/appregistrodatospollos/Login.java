@@ -69,17 +69,17 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if(!response.isEmpty()){
-                    savePreferences();
+
                 try {
                     JSONObject jsonRespuesta = new JSONObject(response);
-
                         typeUser = jsonRespuesta.getInt("usuario");
                         granja = jsonRespuesta.getString("granja");
                         int doc = jsonRespuesta.getInt("ID_CC");
                         nombre = jsonRespuesta.getString("Nombre");
-
+                        savePreferences();
                         if(typeUser == 1) {
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("Nombre", nombre);
                             progressDialog.dismiss();
                             startActivity(intent);
                             finish();

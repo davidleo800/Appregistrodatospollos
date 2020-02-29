@@ -20,15 +20,15 @@
 
     <EditText
         android:id="@+id/etDoc"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:hint="Documento"
         android:inputType="number"
         android:selectAllOnFocus="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
         app:layout_constraintTop_toBottomOf="@+id/imageView1" />
 
     <Button
@@ -37,11 +37,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:text="Ingresar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etDoc"
-        app:layout_constraintVertical_bias="0.2" />
-
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginStart="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/etDoc" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

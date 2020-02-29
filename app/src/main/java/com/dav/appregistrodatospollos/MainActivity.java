@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -49,7 +50,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-
+    TextView tvNombre;
     RecyclerView rvServidor;
     List<Tb_Detalles_Class> listaServidor = new ArrayList<>();
 
@@ -65,10 +66,26 @@ public class MainActivity extends AppCompatActivity {
         rvServidor = findViewById(R.id.rvServidor);
         rvServidor.setLayoutManager(new GridLayoutManager(this, 1));
 
+        tvNombre = findViewById(R.id.tvNombre);
         obtenerServidor();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        /*
+        Bundle extras = getIntent().getExtras();
+        String nombre;
+        SharedPreferences preferences1 = getSharedPreferences("preferencesLogin2", Context.MODE_PRIVATE);
+        nombre = preferences1.getString("Nombre","");
+        if (nombre == ""){
+            nombre = extras.getString("Nombre");
+            tvNombre.setText(nombre);
+            SharedPreferences preferences = getSharedPreferences("preferencesLogin2", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("Nombre", nombre);
+            editor.commit();
+        }else{
+            tvNombre.setText(nombre);
+        }
+        */
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_favorite:
                 // User chose the "Settings" item, show the app settings UI...
-                SharedPreferences preferences = getSharedPreferences("preferencesLogin", Context.MODE_PRIVATE);
-                preferences.edit().clear().commit();
+                //SharedPreferences preferences = getSharedPreferences("preferencesLogin2", Context.MODE_PRIVATE);
+                //preferences.edit().clear().commit();
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 finish();

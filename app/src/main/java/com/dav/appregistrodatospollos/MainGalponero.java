@@ -88,22 +88,24 @@ public class MainGalponero extends AppCompatActivity {
         granja = preferences1.getString("Granja","");
         nombre = preferences1.getString("Nombre","");
         documentoGalponero = preferences1.getInt("Doc",0);
-        if (granja == "" || nombre == "" || documentoGalponero == 0 ){
-            nombre = extras.getString("Nombre");
-            granja = extras.getString("Granja");
-            documentoGalponero = extras.getInt("Doc");
-            tvNombre.setText(nombre);
-            tvGranja.setText(granja);
-            SharedPreferences preferences = getSharedPreferences("preferencesLogin1", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("Granja", granja);
-            editor.putString("Nombre", nombre);
-            editor.putInt("Doc", documentoGalponero);
-            editor.commit();
-        }else{
-            tvNombre.setText(nombre);
-            tvGranja.setText(granja);
-        }
+
+            if (granja == "" || nombre == "" || documentoGalponero == 0) {
+                nombre = extras.getString("Nombre");
+                granja = extras.getString("Granja");
+                documentoGalponero = extras.getInt("Doc");
+                tvNombre.setText(nombre);
+                tvGranja.setText(granja);
+                SharedPreferences preferences = getSharedPreferences("preferencesLogin1", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("Granja", granja);
+                editor.putString("Nombre", nombre);
+                editor.putInt("Doc", documentoGalponero);
+                editor.commit();
+            } else {
+                tvNombre.setText(nombre);
+                tvGranja.setText(granja);
+            }
+
 
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override

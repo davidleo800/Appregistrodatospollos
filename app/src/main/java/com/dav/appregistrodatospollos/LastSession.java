@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class LastSession extends AppCompatActivity {
 
@@ -33,10 +34,12 @@ public class LastSession extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();
-                    }else {
+                    }else if(typeUser == 2){
                         Intent intent = new Intent(getApplicationContext(), MainGalponero.class);
                         startActivity(intent);
                         finish();
+                    }else{
+                        Toast.makeText(LastSession.this, "No encontro sesion",Toast.LENGTH_LONG).show();
                     }
                 }else{
                     Intent intent = new Intent(getApplicationContext(), Login.class);
