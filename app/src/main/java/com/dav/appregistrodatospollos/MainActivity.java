@@ -50,7 +50,6 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    TextView tvNombre;
     RecyclerView rvServidor;
     List<Tb_Detalles_Class> listaServidor = new ArrayList<>();
 
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         rvServidor = findViewById(R.id.rvServidor);
         rvServidor.setLayoutManager(new GridLayoutManager(this, 1));
 
-        tvNombre = findViewById(R.id.tvNombre);
         obtenerServidor();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
