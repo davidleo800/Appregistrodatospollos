@@ -4,10 +4,10 @@
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
         android:id="@+id/action_favorite"
-        android:icon="@drawable/ic_launcher_foreground"
+
         android:title="Cerrar sesión"
         app:showAsAction="ifRoom"/>
-
+    <!--android:icon="@drawable/ic_launcher_foreground"-->
 
 
 </menu>

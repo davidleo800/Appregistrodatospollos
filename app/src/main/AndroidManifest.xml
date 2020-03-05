@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Toolbar"></activity>
+        <activity android:name=".RegistrarUsuario"></activity>
+        <activity android:name=".Toolbar" />
         <activity android:name=".LastSession">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,10 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainGalponero" android:windowSoftInputMode="adjustResize"/>
-
-        <activity android:name=".Login"
-            android:windowSoftInputMode="stateUnchanged|adjustResize" ></activity>
+        <activity
+            android:name=".MainGalponero"
+            android:windowSoftInputMode="stateUnchanged|adjustResize" />
+        <activity
+            android:name=".Login"
+            android:windowSoftInputMode="stateUnchanged|adjustResize" />
         <activity android:name=".MainActivity" />
     </application>
 

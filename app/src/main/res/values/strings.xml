@@ -8,9 +8,9 @@
         <item>Granja 1</item>
         <item>Granja 2</item>
     </string-array>
-    <string-array name="array_galpon">
-        <item>Galpon 1</item>
-        <item>Galpon 2</item>
+    <string-array name="array_Usuario">
+        <item>Veterinario</item>
+        <item>Granjero</item>
     </string-array>
 
 </resources>

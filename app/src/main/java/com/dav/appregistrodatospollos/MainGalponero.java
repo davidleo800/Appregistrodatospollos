@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +37,13 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainGalponero extends AppCompatActivity {
+public class MainGalponero extends AppCompatActivity implements View.OnClickListener {
 
     Button btnSync, btnAgregar;
     EditText etFecha, etGalpon, etMort, etAlimento, etPeso;
@@ -51,6 +54,7 @@ public class MainGalponero extends AppCompatActivity {
     AdapterLocal adapterLocal;
 
     int documentoGalponero;
+    private int day, month, year;
 
 
     @Override
@@ -71,6 +75,8 @@ public class MainGalponero extends AppCompatActivity {
 
         rvLocal = findViewById(R.id.rvLocal);
         rvLocal.setLayoutManager(new GridLayoutManager(this, 1));
+
+        etFecha.setOnClickListener(this);
 
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         String fecha = formato.format(new Date());
@@ -277,5 +283,24 @@ public class MainGalponero extends AppCompatActivity {
 
         db.close();
     }
+    @Override
+    public void onClick(View view) {
+        final Calendar c = Calendar.getInstance();
+        day = c.get(Calendar.DAY_OF_MONTH);
+        month = c.get(Calendar.MONTH);
+        year = c.get(Calendar.YEAR);
 
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                etFecha.setText(i+"-"+(i1+1)+"-"+i2);
+            }
+        }, year, month,day);
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }
