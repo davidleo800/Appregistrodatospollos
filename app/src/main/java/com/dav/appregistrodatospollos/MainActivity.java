@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 
 import android.content.Context;
@@ -51,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     RecyclerView rvServidor;
+    private ProgressDialog progressDialog;
     List<Tb_Detalles_Class> listaServidor = new ArrayList<>();
-
     AdapterServer adapterServidor;
 
     @Override
@@ -64,10 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
         rvServidor = findViewById(R.id.rvServidor);
         rvServidor.setLayoutManager(new GridLayoutManager(this, 1));
-
+        progressDialog= new ProgressDialog(this);
         obtenerServidor();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         /*
         Bundle extras = getIntent().getExtras();
         String nombre;
@@ -115,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void obtenerServidor() {
         listaServidor.clear();
+        progressDialog.setMessage("Cargando datos");
+        progressDialog.show();
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, getResources().getString(R.string.URL_OBTENER_tb_detalles),
                 new Response.Listener<String>() {
@@ -143,14 +147,18 @@ public class MainActivity extends AppCompatActivity {
 
                             adapterServidor = new AdapterServer(MainActivity.this, listaServidor);
                             rvServidor.setAdapter(adapterServidor);
+                            progressDialog.dismiss();
                         } catch (JSONException e) {
+                            progressDialog.dismiss();
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 error.printStackTrace();
+                progressDialog.dismiss();
             }
         });
 

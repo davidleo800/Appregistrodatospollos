@@ -94,6 +94,7 @@ public class Login extends AppCompatActivity {
                         }
 
                 }catch (JSONException e){
+                    progressDialog.dismiss();
                     e.printStackTrace();
                 }
                 }else{
@@ -107,6 +108,7 @@ public class Login extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 Toast.makeText(Login.this, error.toString(), Toast.LENGTH_SHORT).show();
             }
         }){

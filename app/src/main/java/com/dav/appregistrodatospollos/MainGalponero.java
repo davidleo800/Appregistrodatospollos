@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +53,7 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
     RecyclerView rvLocal;
     List<Tb_Detalles_Class> listaLocal = new ArrayList<>();
     AdapterLocal adapterLocal;
+    private ProgressDialog progressDialog;
 
     int documentoGalponero;
     private int day, month, year;
@@ -72,6 +74,8 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
 
         tvNombre = findViewById(R.id.tvNombre);
         tvGranja = findViewById(R.id.tvGranja);
+
+        progressDialog= new ProgressDialog(this);
 
         rvLocal = findViewById(R.id.rvLocal);
         rvLocal.setLayoutManager(new GridLayoutManager(this, 1));
@@ -164,6 +168,8 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
     }
 
     public void sincronizar() {
+        progressDialog.setMessage("Cargando datos");
+        progressDialog.show();
         JSONArray jsonArrayProducto = new JSONArray();
         for(int i = 0 ; i < listaLocal.size() ; i++) {
             JSONObject jsonObjectProducto = new JSONObject();
@@ -183,7 +189,9 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
         JSONObject json = new JSONObject();
         try {
             json.put("Detalles", jsonArrayProducto);//Productos
+            progressDialog.dismiss();
         } catch (JSONException e) {
+            progressDialog.dismiss();
             e.printStackTrace();
         }
 
