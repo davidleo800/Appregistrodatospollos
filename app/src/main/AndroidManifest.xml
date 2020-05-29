@@ -10,8 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".RegistrarUsuario"></activity>
+        android:theme="@style/AppTheme">
+        <activity android:name=".RegistrarUsuario"
+            android:windowSoftInputMode="stateHidden" >
+
+        </activity>
         <activity android:name=".Toolbar" />
         <activity android:name=".LastSession">
             <intent-filter>
@@ -22,7 +25,8 @@
         </activity>
         <activity
             android:name=".MainGalponero"
-            android:windowSoftInputMode="stateUnchanged|adjustResize" />
+            android:configChanges="screenSize|orientation"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".Login"
             android:windowSoftInputMode="stateUnchanged|adjustResize" />

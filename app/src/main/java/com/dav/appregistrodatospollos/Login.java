@@ -21,6 +21,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,10 +32,12 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
-    EditText etDocumento;
+    TextInputLayout etDocumento;
+    TextInputEditText tiDococumento;
     Button btIngresar;
     private ProgressDialog progressDialog;
     String documento, granja, nombre;
+    private TextView tvSignup;
     int typeUser;
 
     @Override
@@ -41,13 +45,25 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         etDocumento = findViewById(R.id.etDoc);
+        tiDococumento = findViewById(R.id.tiDoc);
+
+        tvSignup = findViewById(R.id.link_signup);
+
         btIngresar = findViewById(R.id.btIngresar);
+
+        tvSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), RegistrarUsuario.class);
+                startActivityForResult(intent, 0);
+            }
+        });
 
         recoverPreferences();
         btIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                documento = etDocumento.getText().toString();
+                documento = etDocumento.getEditText().getText().toString();
                 if(!documento.isEmpty()) {
                     validateUser();
                 }else {
@@ -136,7 +152,7 @@ public class Login extends AppCompatActivity {
 
     private void recoverPreferences(){
         SharedPreferences preferences = getSharedPreferences("preferencesLogin", Context.MODE_PRIVATE);
-        etDocumento.setText(preferences.getString("Documento",""));
+        tiDococumento.setText(preferences.getString("Documento",""));
     }
 
 

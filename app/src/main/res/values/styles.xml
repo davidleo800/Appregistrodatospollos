@@ -1,11 +1,29 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
+        <!-- Customize your theme here.-->
+        <item name="colorPrimary">@color/colorNaranja</item>
+        <item name="colorPrimaryDark">@color/colorPollosFiesta</item>
+        <item name="colorAccent">@color/colorPollosFiesta</item>
+        <!--
+        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimaryVariant">#3700B3</item>
+        <item name="colorOnPrimary">#212121</item> // texto de un boton
+        <item name="colorSecondary">#2962FF</item>
+        <item name="colorSecondaryVariant">#0039CB</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorError">#F44336</item>
+        <item name="colorOnError">#FFFFFF</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#D7E9FF</item>
+        <item name="android:colorBackground">@color/background</item> // color de campos
+        <item name="colorOnBackground">#212121</item>
+        <item name="android:textColorHighlight">@color/colorAmarillo</item>
+        -->
     </style>
+    <color name="background">@color/colorBlanco</color>
+
+
 
 </resources>

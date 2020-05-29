@@ -38,90 +38,94 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTitulo">
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/lltitulos"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:id="@+id/lltitulos"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="100"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="30dp"
+                android:layout_weight="100"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/tvFecha"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:textSize="10dp"
-                        android:hint="Fecha"/>
-                    <TextView
-                        android:id="@+id/tvGranja"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:textSize="10dp"
-                        android:hint="Granja"/>
+                <TextView
+                    android:id="@+id/tvFecha"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="20"
+                    android:hint="Fecha"
+                    android:textSize="10dp" />
 
-                    <TextView
-                        android:id="@+id/tvGalpon"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:textSize="10dp"
-                        android:gravity="center"
-                        android:hint="Galpon"/>
-                    <TextView
-                        android:id="@+id/tvGalponero"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="30"
-                        android:gravity="center"
-                        android:textSize="10dp"
-                        android:hint="Granjero"/>
+                <TextView
+                    android:id="@+id/tvGranja"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="20"
+                    android:hint="Granja"
+                    android:textSize="10dp" />
 
-                    <TextView
-                        android:id="@+id/tvMort"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="30"
-                        android:gravity="center"
-                        android:textSize="10dp"
-                        android:hint="Mortalidad"/>
-                    <TextView
-                        android:id="@+id/tvAlimento"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="23"
-                        android:gravity="center"
-                        android:textSize="10dp"
-                        android:hint="Alimento"/>
+                <TextView
+                    android:id="@+id/tvGalpon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="20"
+                    android:gravity="center"
+                    android:hint="Galpon"
+                    android:textSize="10dp" />
 
-                    <TextView
-                        android:id="@+id/tvPeso"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="15"
-                        android:gravity="center"
-                        android:textSize="10dp"
-                        android:hint="Peso"/>
+                <TextView
+                    android:id="@+id/tvGalponero"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:gravity="center"
+                    android:hint="Granjero"
+                    android:textSize="10dp" />
 
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvMort"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:gravity="center"
+                    android:hint="Mortalidad"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/tvAlimento"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="23"
+                    android:gravity="center"
+                    android:hint="Alimento"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/tvPeso"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="15"
+                    android:gravity="center"
+                    android:hint="Peso"
+                    android:textSize="10dp" />
+
+            </LinearLayout>
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvServidor"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lltitulos" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvServidor"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lltitulos" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

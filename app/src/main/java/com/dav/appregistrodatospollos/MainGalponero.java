@@ -2,22 +2,30 @@ package com.dav.appregistrodatospollos;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -31,6 +39,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,45 +57,81 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.animation.Animator;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
+
 public class MainGalponero extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnSync, btnAgregar;
-    EditText etFecha, etGalpon, etMort, etAlimento, etPeso;
-    TextView tvNombre, tvGranja;
+    TextInputLayout tiGalpon, tiAlimento, tiMortalidad, tiPeso;
+    TextInputEditText tietGalpon, tietAlimento, tietMortalidad, tietPeso;
+    Button btnAgregar;
+    // Button btnSync;
+    EditText etFecha;
+    TextView tvNombre, tvGranja, tvregistros;
     private Toolbar toolbar;
     RecyclerView rvLocal;
     List<Tb_Detalles_Class> listaLocal = new ArrayList<>();
     AdapterLocal adapterLocal;
     private ProgressDialog progressDialog;
-
+    FloatingActionButton floatingButton;
+    CoordinatorLayout coorLayout;
     int documentoGalponero;
     private int day, month, year;
-
+    boolean click = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_galponero);
 
-        btnSync = findViewById(R.id.btnSync);
+        // btnSync = findViewById(R.id.btnSync);
         btnAgregar = findViewById(R.id.btnAgregar);
+
+        tiGalpon = findViewById(R.id.tiGal);
+        tiAlimento = findViewById(R.id.tiAlim);
+        tiMortalidad = findViewById(R.id.tiMort);
+        tiPeso = findViewById(R.id.tiPeso);
+
+        tietGalpon = findViewById(R.id.tietGal);
+        tietAlimento = findViewById(R.id.tiettAlim);
+        tietMortalidad = findViewById(R.id.tietMort);
+        tietPeso = findViewById(R.id.tietPeso);
+
         etFecha = findViewById(R.id.etFecha);
-        etGalpon = findViewById(R.id.etGalpon);
-        etMort = findViewById(R.id.etMortalidad);
-        etAlimento = findViewById(R.id.etAlimento);
-        etPeso = findViewById(R.id.etPeso);
+
 
         tvNombre = findViewById(R.id.tvNombre);
         tvGranja = findViewById(R.id.tvGranja);
+        tvregistros = findViewById(R.id.textView2);
+
+        coorLayout = findViewById(R.id.coordinatorLayout);
+
+        rvLocal = findViewById(R.id.rvLocal);
+        // Definicion de floating action button
+        floatingButton = findViewById(R.id.floating_action_button);
 
         progressDialog= new ProgressDialog(this);
 
-        rvLocal = findViewById(R.id.rvLocal);
         rvLocal.setLayoutManager(new GridLayoutManager(this, 1));
-
+        etFecha.setInputType(InputType.TYPE_NULL);
         etFecha.setOnClickListener(this);
 
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        floatingButton.show();
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click = !click;
+                progressDialog.setMessage("Cargando datos");
+                progressDialog.show();
+
+                sincronizar();
+                // Snackbar.make(v, "Se presionó el FAB", Snackbar.LENGTH_LONG).show();
+
+            }
+        });
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         String fecha = formato.format(new Date());
         etFecha.setText(fecha);
 
@@ -117,19 +166,38 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
             }
 
 
-        btnSync.setOnClickListener(new View.OnClickListener() {
+        /*btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sincronizar();
             }
-        });
+        });*/
+
+        textwatcherValidacion();
+
         btnAgregar.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
-                if(etFecha.getText().toString().equals("") || etAlimento.getText().toString().equals("") ||
-                        etPeso.getText().toString().equals("") || etMort.getText().toString().equals("")
-                        || etGalpon.getText().toString().equals("")) {
-                    Toast.makeText(MainGalponero.this, "SE DEBEN LLENAR TODOS LOS CAMPOS", Toast.LENGTH_SHORT).show();
+                if(etFecha.getText().toString().equals("") || tiAlimento.getEditText().getText().toString().equals("") ||
+                        tiPeso.getEditText().getText().toString().equals("") || tiMortalidad.getEditText().getText().toString().equals("")
+                        || tiGalpon.getEditText().getText().toString().equals("")) {
+
+                    if(tiGalpon.getEditText().getText().toString().equals(""))
+                        tiGalpon.setError("Complete este campo");
+                    else  tiGalpon.setError(null);
+                    if(tiAlimento.getEditText().getText().toString().equals(""))
+                        tiAlimento.setError("Complete este campo");
+                    else tiAlimento.setError(null);
+                    if(tiMortalidad.getEditText().getText().toString().equals(""))
+                        tiMortalidad.setError("Complete este campo");
+                    else tiMortalidad.setError(null);
+                    if(tiPeso.getEditText().getText().toString().equals(""))
+                        tiPeso.setError("Complete este campo");
+                    else tiPeso.setError(null);
+
+
+                    Toast.makeText(MainGalponero.this, "Se deben completar todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
                     agregarLocal();
                 }
@@ -150,7 +218,7 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_favorite:
+            case R.id.logout:
                 // User chose the "Settings" item, show the app settings UI...
                 SharedPreferences preferences = getSharedPreferences("preferencesLogin", Context.MODE_PRIVATE);
                 SharedPreferences preferences1 = getSharedPreferences("preferencesLogin1", Context.MODE_PRIVATE);
@@ -168,8 +236,7 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
     }
 
     public void sincronizar() {
-        progressDialog.setMessage("Cargando datos");
-        progressDialog.show();
+        floatingButtonSync();
         JSONArray jsonArrayProducto = new JSONArray();
         for(int i = 0 ; i < listaLocal.size() ; i++) {
             JSONObject jsonObjectProducto = new JSONObject();
@@ -188,8 +255,7 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
         }
         JSONObject json = new JSONObject();
         try {
-            json.put("Detalles", jsonArrayProducto);//Productos
-            progressDialog.dismiss();
+            json.put("Detalles", jsonArrayProducto);
         } catch (JSONException e) {
             progressDialog.dismiss();
             e.printStackTrace();
@@ -197,7 +263,6 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
 
         String jsonStr = json.toString();
         registrarServidor(jsonStr);
-
     }
 
     public void registrarServidor(final String json) {
@@ -206,29 +271,32 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(String response) {
                 if (response.trim().equals("OK")) {
+                    floatingButtonDone();
                     AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(MainGalponero.this, "dbSistema", null, 1);
                     SQLiteDatabase db = admin.getWritableDatabase();
                     admin.borrarRegistros(db);
 
+                    progressDialog.dismiss();
+                    Snackbar.make(coorLayout, "Se envió datos exitosamente", Snackbar.LENGTH_LONG).show();
                     obtenerLocal();
-                    Toast.makeText(MainGalponero.this,"Se envio datos exitosamente", Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
                 error.printStackTrace();
             }
         }){
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("json", json);
-
                 return params;
             }
         };
 
         requestQueue.add(stringRequest);
+
     }
 
     public void agregarLocal() {
@@ -240,31 +308,39 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
         ContentValues registro = new ContentValues();
         registro.put("fecha", etFecha.getText().toString());
         registro.put("granja", tvGranja.getText().toString());
-        registro.put("galpon", etGalpon.getText().toString());
+        registro.put("galpon", tiGalpon.getEditText().getText().toString());
         registro.put("galponero", String.valueOf(documentoGalponero));
-        registro.put("mortalidad", etMort.getText().toString());
-        registro.put("alimento", etAlimento.getText().toString());
-        registro.put("peso", etPeso.getText().toString());
+        registro.put("mortalidad", tiMortalidad.getEditText().getText().toString());
+        registro.put("alimento", tiAlimento.getEditText().getText().toString());
+        registro.put("peso", tiPeso.getEditText().getText().toString());
 
         db.insert("tb_detalles", null, registro);
 
-        etGalpon.setText("");
-        etMort.setText("");
-        etAlimento.setText("");
-        etPeso.setText("");
+        tietGalpon.setText("");
+        tietAlimento.setText("");
+        tietMortalidad.setText("");
+        tietPeso.setText("");
 
         db.close();
         obtenerLocal();
     }
-
+    int cont = 0;
     public void obtenerLocal() {
         listaLocal.clear();
-
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(MainGalponero.this, "dbSistema", null, 1);
         SQLiteDatabase db = admin.getWritableDatabase();
 
         Cursor fila = db.rawQuery("select * from tb_detalles", null);
         if(fila != null && fila.getCount() != 0) {
+            tvregistros.setText("Registros pendientes por cargar");
+                cont ++;
+                if (cont <= 1) {
+                    floatingButtonStart();
+                }else{
+                    floatingButton.setRotation(0f);
+                    floatingButton.show();
+                }
+
             fila.moveToFirst();
             do {
                 listaLocal.add(
@@ -283,10 +359,15 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
 
             adapterLocal = new AdapterLocal(MainGalponero.this, listaLocal);
             rvLocal.setAdapter(adapterLocal);
+            // btnSync.setEnabled(true);
+
+
         } else {
             adapterLocal = new AdapterLocal(MainGalponero.this, listaLocal);
             rvLocal.setAdapter(adapterLocal);
-            Toast.makeText(this, "No hay registros", Toast.LENGTH_SHORT).show();
+            // btnSync.setEnabled(false);
+            floatingButton.hide();
+            tvregistros.setText("No hay registros pendientes por cargar");
         }
 
         db.close();
@@ -311,4 +392,169 @@ public class MainGalponero extends AppCompatActivity implements View.OnClickList
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
+    public void floatingButtonDone() {
+        floatingButton.setRotation(0f);
+        floatingButton.setImageResource(R.drawable.baseline_cloud_done_white_18dp);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            final Interpolator interpolador = AnimationUtils.loadInterpolator(getBaseContext(),
+                    android.R.interpolator.fast_out_slow_in);
+
+            floatingButton.animate().scaleY(3)
+                    .scaleX(1).rotation(0)
+                    .setInterpolator(interpolador)
+                    .setDuration(600)
+                    .setStartDelay(600)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                           /* floatingButton.animate()
+                                    .scaleY(0)
+                                    .scaleX(0)
+                                    .setInterpolator(interpolador)
+                                    .setDuration(600)
+                                    .start();*/
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+        }
+    }
+
+    public void floatingButtonStart() {
+        floatingButton.setImageResource(R.drawable.baseline_cloud_upload_white_18dp);
+        floatingButton.show();
+        floatingButton.setScaleX(0);
+        floatingButton.setScaleY(0);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            final Interpolator interpolador = AnimationUtils.loadInterpolator(getBaseContext(),
+                    android.R.interpolator.fast_out_slow_in);
+            floatingButton.animate()
+                    .scaleX(1)
+                    .scaleY(1)
+                    .setInterpolator(interpolador)
+                    .setDuration(600)
+                    .setStartDelay(500)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+        }
+    }
+
+    public void floatingButtonSync() {
+        floatingButton.setImageResource(R.drawable.baseline_sync_white_18dp);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            final Interpolator interpolador = AnimationUtils.loadInterpolator(getBaseContext(),
+                    android.R.interpolator.linear);
+
+            floatingButton.animate()
+                    .rotation( click ? 20000: 20000).setDuration(60000)
+                    .setInterpolator(interpolador)
+                    .start();
+        }
+    }
+
+    public void textwatcherValidacion() {
+
+        tietGalpon.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tiGalpon.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        tietAlimento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tiAlimento.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        tietMortalidad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tiMortalidad.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        tietPeso.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tiPeso.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+    }
+
 }
