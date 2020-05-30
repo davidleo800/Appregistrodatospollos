@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +47,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         etDocumento = findViewById(R.id.etDoc);
-        tiDococumento = findViewById(R.id.tiDoc);
+        tiDococumento = findViewById(R.id.tietDoc_log);
 
         tvSignup = findViewById(R.id.link_signup);
 
@@ -59,7 +61,8 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        recoverPreferences();
+        textwatcherValidacion();
+        //recoverPreferences();
         btIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +70,7 @@ public class Login extends AppCompatActivity {
                 if(!documento.isEmpty()) {
                     validateUser();
                 }else {
+                    etDocumento.setError("Complete este campo");
                     Toast.makeText(Login.this, "Ingrese un dato",Toast.LENGTH_LONG).show();
                 }
             }
@@ -116,6 +120,7 @@ public class Login extends AppCompatActivity {
                 }else{
                     progressDialog.dismiss();
                     Toast.makeText(Login.this, "Usuario incorrecto", Toast.LENGTH_SHORT).show();
+                    etDocumento.setError("Usuario incorrecto");
                 }
 
                 }
@@ -153,6 +158,27 @@ public class Login extends AppCompatActivity {
     private void recoverPreferences(){
         SharedPreferences preferences = getSharedPreferences("preferencesLogin", Context.MODE_PRIVATE);
         tiDococumento.setText(preferences.getString("Documento",""));
+    }
+
+    public void textwatcherValidacion() {
+
+        tiDococumento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                etDocumento.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
 

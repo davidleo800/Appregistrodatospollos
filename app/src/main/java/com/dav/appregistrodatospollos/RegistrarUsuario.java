@@ -18,18 +18,24 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegistrarUsuario extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener{
 
@@ -41,6 +47,7 @@ public class RegistrarUsuario extends AppCompatActivity implements Response.List
     private RadioGroup rgItems;
     private CoordinatorLayout coorLayout;
     ProgressDialog progreso;
+    private int typeUser;
 
     RequestQueue request;
     JsonObjectRequest jsonObjectRequest;
@@ -90,6 +97,7 @@ public class RegistrarUsuario extends AppCompatActivity implements Response.List
         textwatcherValidacion();
 
         rgItems.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if(checkedId == R.id.rbVet){
@@ -108,7 +116,8 @@ public class RegistrarUsuario extends AppCompatActivity implements Response.List
 
                 if(tiDocumento.getEditText().getText().toString().equals("") ||
                         tiNombre.getEditText().getText().toString().equals("") ||
-                            tiApellido.getEditText().getText().toString().equals("")){
+                            tiApellido.getEditText().getText().toString().equals("") ||
+                        ((rbVeterinario.isChecked() == false && rbGranjero.isChecked() == false))){
 
                     if(tiDocumento.getEditText().getText().toString().equals(""))
                         tiDocumento.setError("Complete este campo");
@@ -119,7 +128,10 @@ public class RegistrarUsuario extends AppCompatActivity implements Response.List
                     if(tiApellido.getEditText().getText().toString().equals(""))
                         tiApellido.setError("Complete este campo");
                     else tiApellido.setError(null);
-
+                    if(rbVeterinario.isChecked() == false && rbGranjero.isChecked() == false){
+                        rgItems.setBackgroundColor(R.color.colorRed);
+                        Toast.makeText(RegistrarUsuario.this, "Seleccione tipo de usuario", Toast.LENGTH_LONG).show();
+                    }
 
 
 
@@ -130,7 +142,8 @@ public class RegistrarUsuario extends AppCompatActivity implements Response.List
                             tiGranja.setError("Complete este campo");
                         else tiGranja.setError(null);
                     }else{
-                        cargarWebService();
+                        validateUser();
+                        //cargarWebService();
                     }
                 }
                 InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -160,13 +173,12 @@ public class RegistrarUsuario extends AppCompatActivity implements Response.List
         tietApellido.setText("");
         tietGranja.setText("");
         rgItems.clearCheck();
+        tiGranja.setVisibility(View.GONE);
 
     }
 
     private void cargarWebService() {
 
-        progreso.setMessage("Cargando datos");
-        progreso.show();
         int usuario;
         String url;
         if (rbVeterinario.isChecked()) {
@@ -269,6 +281,44 @@ public class RegistrarUsuario extends AppCompatActivity implements Response.List
             }
         });
 
+    }
+
+    private void validateUser(){
+        progreso.setMessage("Cargando datos");
+        progreso.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                getResources().getString(R.string.URL_LOGIN), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.isEmpty()){
+                    progreso.dismiss();
+                    tiDocumento.setError("Usuario ya existe");
+                    Toast.makeText(RegistrarUsuario.this, "Usuario existente, por favor ingrese uno nuevo",
+                            Toast.LENGTH_SHORT).show();
+                }else{
+                    // no existe usuario
+                    cargarWebService();
+                }
+
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progreso.dismiss();
+                Toast.makeText(RegistrarUsuario.this, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<String, String>();
+                parametros.put("usuario", tiDocumento.getEditText().getText().toString());
+                return parametros;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 
 

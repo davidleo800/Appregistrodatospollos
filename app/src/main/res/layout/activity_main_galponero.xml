@@ -32,8 +32,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tvGranja"

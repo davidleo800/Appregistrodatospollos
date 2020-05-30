@@ -2,10 +2,12 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainGalponero">
+    tools:context=".MainGalponero"
+    android:background="@color/colorBlanco">
 
     <include
         android:id="@+id/toolbar"
@@ -30,9 +32,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tvGranja"
@@ -41,8 +41,7 @@
                 android:gravity="center"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <EditText
                 android:id="@+id/etFecha"
@@ -56,13 +55,12 @@
                 android:gravity="center"
                 android:hint="Fecha"
                 android:inputType="date"
-                android:keyboardNavigationCluster="false"
+                android:focusable="false"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvNombre" />
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <EditText
-                android:id="@+id/etGalpon"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiGal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -72,13 +70,25 @@
                 android:layout_marginRight="32dp"
                 android:gravity="center"
                 android:hint="Galpon"
-                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etFecha" />
+                app:helperTextEnabled="true"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@drawable/round_error_outline_white_18dp"
+                app:errorIconTint="@color/colorRed">
 
-            <EditText
-                android:id="@+id/etAlimento"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tietGal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="text"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiAlim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -88,13 +98,21 @@
                 android:layout_marginRight="32dp"
                 android:gravity="center"
                 android:hint="Alimento"
-                android:inputType="numberDecimal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etMortalidad" />
+                app:layout_constraintStart_toStartOf="parent"  >
 
-            <EditText
-                android:id="@+id/etMortalidad"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiettAlim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="numberDecimal"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiMort"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -104,13 +122,22 @@
                 android:layout_marginRight="32dp"
                 android:gravity="center"
                 android:hint="Mortalidad"
-                android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etGalpon" />
+                app:layout_constraintStart_toStartOf="parent">
 
-            <EditText
-                android:id="@+id/etPeso"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tietMort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tiPeso"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -120,10 +147,20 @@
                 android:layout_marginRight="32dp"
                 android:gravity="center"
                 android:hint="Peso"
-                android:inputType="numberDecimal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etAlimento" />
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tietPeso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:inputType="numberDecimal"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
             <Button
                 android:id="@+id/btnAgregar"
@@ -133,23 +170,23 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="AGREGAR"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etPeso" />
-
-            <Button
-                android:id="@+id/btnSync"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="SINCRONIZAR"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnAgregar" />
-
+                app:layout_constraintEnd_toEndOf="parent"/>
+            <!--
+                        <Button
+                            android:id="@+id/btnSync"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="SINCRONIZAR"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/btnAgregar" />
+            -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="200dp"
+                android:descendantFocusability="blocksDescendants">
 
                 <TextView
                     android:id="@+id/textView2"
@@ -165,10 +202,11 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvLocal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2"
-                    android:focusable="false">
+                    android:layout_height="173dp"
+                    android:layout_marginTop="28dp"
+                    android:focusable="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
@@ -186,7 +224,7 @@
         android:layout_margin="16dp"
         android:contentDescription="Sincronizacion"
         app:srcCompat="@drawable/baseline_cloud_upload_white_18dp"
-        app:backgroundTint="@color/colorPollosFiesta2"/>
+        app:backgroundTint="@color/colorNaranja"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

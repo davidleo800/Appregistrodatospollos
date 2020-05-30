@@ -9,4 +9,5 @@
     <color name="colorNaranja">#FF6600</color>
     <color name="colorAmarillo">#FFFF00</color>
     <color name="colorRed"> #FF0000 </color>
+    <color name="colorBlack">#000</color>
 </resources>
